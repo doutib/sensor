@@ -1,0 +1,17 @@
+{
+    "contents" : "# Load data ---------------------------------------------------------------\n\nlocations = read.table('data/mote-location-data.txt',header = TRUE)\nhead(locations)\n\nvalues = read.csv('data/sonoma-data-net.csv')\nhead(values)\n\n\n# Remove N/As -------------------------------------------------------------\n\nvalues = na.omit(values)\n\n\n# Outliers locations ------------------------------------------------------\n\n## # Distance\noutliers_distance = which(locations$Dist>1)\n\n## # Remove outliers\nlocations = locations[-outliers_distance,]\n\n# Outliers values ---------------------------------------------------------\n\n## # Parent\noutliers_parent = which(values$parent==65535)\n\n## # Voltage\noutliers_voltage = which(values$voltage>300)\n\n## # Depth\noutliers_depth = which(values$depth>=250)\n\n## # Adjusted humidity\noutliers_humid_adj = which(values$humid_adj>120)\n\n## # Temperature\noutliers_humid_temp = which(values$humid_temp>40)\n\n\n## # Remove outliers\noutliers_values = unique(c(outliers_parent,\n                           outliers_voltage,\n                           outliers_depth,\n                           outliers_humid_temp,\n                           outliers_humid_adj))\nvalues = values[-outliers_values,]\n\n## # Reassign outliers\nvalues$humidity[values$humidity<0] = 0\nvalues$humidity[values$humidity>100] = 100\nvalues$humid_adj[values$humid_adj<0] = 0\nvalues$humid_adj[values$humid_adj>100] = 100\n",
+    "created" : 1457303492001.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1102176851",
+    "id" : "7AF35C64",
+    "lastKnownWriteTime" : 1457322832,
+    "path" : "~/Documents/doutib-work/sensor/Data_Cleanning.R",
+    "project_path" : "Data_Cleanning.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
